@@ -36,17 +36,11 @@ mapfile = fits.open(iext)
 im = np.squeeze(mapfile[0].data) # drop shallow 3rd axis from data map
 var = np.squeeze(mapfile[1].data) # drop shallow 3rd axis from variance map
 
-# get World Coordinate System info
-wcs = WCS(mapfile[0].header)
-wcs = wcs.dropaxis(2) # drop shallow 3rd axis
-
-
 # Crop to central part
 
 crop = Cutout2D(im, (round(0.5*im.shape[0]), round(0.5*im.shape[1])),
-                (0.2*im.shape[1],0.2*im.shape[0]), wcs=wcs)
+                (0.2*im.shape[1],0.2*im.shape[0]))
     
-cropwcs = crop.wcs
 cropim = crop.data
 
 x = np.linspace(0, cropim.shape[1], cropim.shape[1])
