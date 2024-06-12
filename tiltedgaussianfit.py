@@ -79,9 +79,7 @@ def gaussian(x, y, cx, cy, height, ratio, theta):
     
     G = np.exp(-(x_rot**2 / (n * ratio * height**2) + y_rot**2 / (n * height**2)))
     return np.ravel(G)
-
-cropim[cropim < 10*np.mean(cropim)] = 0
-p0 = np.array([25, 25, 1, 1, 1])
+p0 = np.array([25, 25, 1, 1, 45])
 popt, pcov = curve_fit(lambda X, cx, cy, height, ratio, theta: gaussian(X[0], X[1], cx, cy, height, ratio, theta), (x, y), np.ravel(cropim), p0)
 fitted = gaussian(x, y, *popt)
 fitted = fitted.reshape(cropim.shape)
