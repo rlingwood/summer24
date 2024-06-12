@@ -40,10 +40,6 @@ var = np.squeeze(mapfile[1].data) # drop shallow 3rd axis from variance map
 wcs = WCS(mapfile[0].header)
 wcs = wcs.dropaxis(2) # drop shallow 3rd axis
 
-x = np.linspace(0, 54, 54)
-y = np.linspace(0, 53, 53)
-x, y = np.meshgrid(x, y)
-
 
 # Crop to central part
 
@@ -52,6 +48,10 @@ crop = Cutout2D(im, (round(0.5*im.shape[0]), round(0.5*im.shape[1])),
     
 cropwcs = crop.wcs
 cropim = crop.data
+
+x = np.linspace(0, cropim.shape[1], cropim.shape[1])
+y = np.linspace(0, cropim.shape[0], cropim.shape[0])
+x, y = np.meshgrid(x, y)
 
 # Plot results
 
@@ -75,7 +75,7 @@ def gaussian(x, y, cx, cy, height, ratio):
     return np.ravel(G)
 
 cropim[cropim < 5*np.mean(cropim)] = 0
-p0 = np.array([30, 30, 1, 1])
+p0 = np.array([20, 30, 1, 1])
 popt, pcov = curve_fit(lambda X, cx, cy, height, ratio: gaussian(X[0], X[1], cx, cy, height, ratio), (x, y), np.ravel(cropim), p0)
 fitted = gaussian(x, y, *popt)
 fitted = fitted.reshape(cropim.shape)
