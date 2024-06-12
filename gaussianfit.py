@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 from astropy.io import fits
+from astropy.wcs import WCS
 from astropy.nddata.utils import Cutout2D
 from astropy.visualization import (SqrtStretch,
                                    ImageNormalize)
@@ -35,11 +36,17 @@ mapfile = fits.open(iext)
 im = np.squeeze(mapfile[0].data) # drop shallow 3rd axis from data map
 var = np.squeeze(mapfile[1].data) # drop shallow 3rd axis from variance map
 
+
+# get World Coordinate System info
+wcs = WCS(mapfile[0].header)
+wcs = wcs.dropaxis(2) # drop shallow 3rd axis
+
+
 # Crop to central part
 
 crop = Cutout2D(im, (round(0.5*im.shape[0]), round(0.5*im.shape[1])),
-                (0.2*im.shape[1],0.2*im.shape[0]))
-    
+                (0.2*im.shape[1],0.2*im.shape[0]), wcs=wcs)
+cropwcs = crop.wcs
 cropim = crop.data
 
 x = np.linspace(0, cropim.shape[1], cropim.shape[1])
@@ -49,7 +56,7 @@ x, y = np.meshgrid(x, y)
 # Plot results
 
 fig = plt.figure(figsize=(4.5,4.5))
-#ax = plt.subplot(projection=cropwcs)
+ax = plt.subplot(projection=cropwcs)
 ax = plt.subplot()
 
 cropim = np.nan_to_num(cropim)
@@ -68,7 +75,7 @@ def gaussian(x, y, cx, cy, height, ratio):
     return np.ravel(G)
 
 cropim[cropim < 5*np.mean(cropim)] = 0
-p0 = np.array([20, 30, 1, 1])
+p0 = np.array([25, 25, 1, 1])
 popt, pcov = curve_fit(lambda X, cx, cy, height, ratio: gaussian(X[0], X[1], cx, cy, height, ratio), (x, y), np.ravel(cropim), p0)
 fitted = gaussian(x, y, *popt)
 fitted = fitted.reshape(cropim.shape)
