@@ -85,7 +85,7 @@ p0 = np.array([25, 25, 1, 1, 1])
 popt, pcov = curve_fit(lambda X, cx, cy, height, ratio, theta: gaussian(X[0], X[1], cx, cy, height, ratio, theta), (x, y), np.ravel(cropim), p0)
 fitted = gaussian(x, y, *popt)
 fitted = fitted.reshape(cropim.shape)
-plt.contour(x, y, fitted, 0, colors='red')
+plt.contour(x, y, fitted, 1, colors='red')
 print('Aspect Ratio:', round(popt[3],2))
 
 cbar = plt.colorbar(image, fraction=0.046, pad=0.04)
