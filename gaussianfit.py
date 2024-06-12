@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 
 from astropy.io import fits
-from astropy.wcs import WCS
 from astropy.nddata.utils import Cutout2D
 from astropy.visualization import (SqrtStretch,
                                    ImageNormalize)
