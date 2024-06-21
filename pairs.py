@@ -1,4 +1,5 @@
-# finds all possible pairs for a set of 3d vectors, with no duplicate pairs (eg, [B, A] when [A, B] already exists) or pairs of the same vector (eg, [A, A])
+# finds all possible pairs for a set of vectors*, with no duplicate pairs (eg, [B, A] when [A, B] already exists) or pairs of the same vector (eg, [A, A])
+# *(unit-size vectors, with x coord, y coord and angle)
 
 import numpy as np
 import math
