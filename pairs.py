@@ -3,6 +3,8 @@
 import numpy as np
 import math
 
+# create a random array of vectors to demonstrate the function:
+
 def fill(size):
     array = np.zeros((size, 3))
     i = 0
@@ -14,6 +16,8 @@ def fill(size):
     return array
         
 a = fill(167)
+
+# pair finding function:
 
 def pair(array):
     length = array.shape[0]
